@@ -1,0 +1,16 @@
+<template>
+  <div>
+    <div class="ui raised green segment center aligned">
+      <a href="/aqi">
+        <h3>Air Quality Index <i class="check circle outline icon"></i></h3>
+      </a>
+
+    </div>
+
+    <div class="ui raised green segment center aligned">
+      <a href="/pistatus">
+        <h3>Pi's Dashboard <i class="check circle outline icon"></i></h3>
+      </a>
+    </div>
+  </div>
+</template>
