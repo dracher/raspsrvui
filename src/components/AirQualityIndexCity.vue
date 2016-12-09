@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button class="ui button primary" @click="toggle">{{ cityName }}</button>
-    <br>
+    <button v-bind:class="[btnCls, btnColor]" @click="toggle">{{ cityName }} &nbsp;&nbsp;&nbsp; {{ currentEmoji }} &nbsp;&nbsp;&nbsp;{{ currentAqi }}</button>
+
     <transition name="fade">
       <div v-show="show" class="ui segment raised">
         <div v-bind:id="cityID" style="width:100%; height:400px;"></div>
@@ -15,48 +15,14 @@
   import axios from 'axios'
   import Highcharts from 'highcharts'
 
-  let drawChart = function (cityID, cityName, data) {
-    let t = data[0].reverse()
-    let p = data[2].map(parseFloat).reverse()
-    let c = data[1].map(parseFloat).reverse()
-
-    Highcharts.chart(cityID, {
-      credits: {
-        enabled: false
-      },
-      title: {
-        text: data[0][23] + ' ' + cityName + ' AQI is  ' + data[2][0]
-      },
-      subtitle: {
-        text: 'Current Conc is ' + data[1][0]
-      },
-      xAxis: {
-        categories: t
-      },
-      yAxis: {
-        title: {
-          text: 'Air Index'
-        }
-      },
-      series: [{
-        name: 'PM2.5',
-        color: '#FF0000',
-        data: p,
-        type: 'line'
-      }, {
-        name: 'Conc',
-        color: '#000000',
-        data: c,
-        type: 'column'
-      }]
-    })
-  }
-
   export default {
-
     data: function () {
       return {
-        show: true
+        show: true,
+        btnCls: 'ui button fluid',
+        btnColor: '',
+        currentAqi: 0,
+        currentEmoji: ''
       }
     },
 
@@ -65,22 +31,81 @@
     methods: {
       toggle: function () {
         this.show = this.show !== true
+      },
+      drawChart: function (cityID, cityName, data) {
+        let t = data[0].reverse()
+        let p = data[2].map(parseFloat).reverse()
+        let c = data[1].map(parseFloat).reverse()
+
+        Highcharts.chart(cityID, {
+          credits: {
+            enabled: false
+          },
+          title: {
+            text: data[0][23] + ' ' + cityName + ' AQI is  ' + data[2][0]
+          },
+          subtitle: {
+            text: 'Current Conc is ' + data[1][0]
+          },
+          xAxis: {
+            categories: t
+          },
+          yAxis: {
+            title: {
+              text: 'Air Index'
+            }
+          },
+          series: [{
+            name: 'PM2.5',
+            color: '#FF0000',
+            data: p,
+            type: 'line'
+          }, {
+            name: 'Conc',
+            color: '#000000',
+            data: c,
+            type: 'column'
+          }]
+        }, () => {
+          this.show = false
+        })
+      },
+      colorByAQI: function (con) {
+        let aqi = parseFloat(con)
+
+        if (aqi === 0) {
+          this.btnColor = ''
+          this.currentEmoji = '(￣.￣)'
+        } else if (aqi <= 50) {
+          this.btnColor = 'green'
+          this.currentEmoji = 'o(*≧▽≦)ツ'
+        } else if (aqi <= 100) {
+          this.btnColor = 'yellow'
+          this.currentEmoji = '╰(*°▽°*)╯'
+        } else if (aqi <= 150) {
+          this.btnColor = 'orange'
+          this.currentEmoji = 'ಥ_ಥ '
+        } else if (aqi <= 200) {
+          this.btnColor = 'red'
+          this.currentEmoji = ' (╯‵□′)╯︵┻━┻'
+        } else if (aqi <= 300) {
+          this.btnColor = 'violet'
+          this.currentEmoji = '╮(╯▽╰)╭'
+        } else {
+          this.btnColor = 'black'
+          this.currentEmoji = ' ( ・◇・)？'
+        }
       }
     },
 
     beforeMount: function () {
       axios.get(this.apiUrl + this.cityID)
         .then((res) => {
-          drawChart(this.cityID, this.cityName, res.data.resp)
+          let rd = res.data.resp
+          this.currentAqi = rd[2][0]
+          this.colorByAQI(rd[2][0])
+          this.drawChart(this.cityID, this.cityName, rd)
         })
-    },
-
-    mounted: function () {
-      if (this.cityID !== 'beijing') {
-        setTimeout(() => {
-          this.show = false
-        }, 500)
-      }
     }
   }
 </script>

@@ -18,11 +18,11 @@
     data: function () {
       return {
         cityNameMapper: {
-          'beijing': '北京',
-          'chengdu': '成都',
-          'guangzhou': '广州',
-          'shanghai': '上海',
-          'shenyang': '沈阳'
+          'beijing': '北 京',
+          'chengdu': '成 都',
+          'guangzhou': '广 州',
+          'shanghai': '上 海',
+          'shenyang': '沈 阳'
         },
         apiUrl: cons.apiUrl + 'airindex/'
       }

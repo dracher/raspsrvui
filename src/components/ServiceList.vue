@@ -1,16 +1,14 @@
 <template>
   <div>
     <div class="ui raised green segment center aligned">
-      <a href="/aqi">
+      <router-link to="/aqi" class="item">
         <h3>Air Quality Index <i class="check circle outline icon"></i></h3>
-      </a>
-
+      </router-link>
     </div>
-
     <div class="ui raised green segment center aligned">
-      <a href="/pistatus">
+      <router-link to="/pistatus" class="item">
         <h3>Pi's Dashboard <i class="check circle outline icon"></i></h3>
-      </a>
+      </router-link>
     </div>
   </div>
 </template>
