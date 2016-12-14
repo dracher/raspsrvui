@@ -12,7 +12,6 @@
 </template>
 
 <script type="text/babel">
-  import axios from 'axios'
   import Highcharts from 'highcharts'
 
   export default {
@@ -99,7 +98,7 @@
     },
 
     beforeMount: function () {
-      axios.get(this.apiUrl + this.cityID)
+      this.$http.get(this.apiUrl + this.cityID)
         .then((res) => {
           let rd = res.data.resp
           this.currentAqi = rd[2][0]

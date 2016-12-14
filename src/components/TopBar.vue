@@ -9,20 +9,8 @@
         <router-link to="/srvs" class="item">Services List</router-link>
         <router-link to="/aqi" class="item">Air Quality Index</router-link>
         <router-link to="/pistatus" class="item">Pi's Status</router-link>
-        <router-link to="/login" class="item right">{{ loginText }}</router-link>
+        <router-link to="/login" class="item right">Login</router-link>
       </div>
     </div>
   </div>
 </template>
-
-
-<script type="text/babel">
-  export default {
-    data: function () {
-      return {
-        isLogin: false,
-        loginText: this.isLogin ? 'User' : 'Login'
-      }
-    }
-  }
-</script>

@@ -23,7 +23,6 @@
 </template>
 
 <script type="text/babel">
-  import axios from 'axios'
   import cons from './constants'
 
   export default{
@@ -36,7 +35,7 @@
     },
 
     beforeMount: function () {
-      axios.get(this.apiUrl + 'pistatus')
+      this.$http.get(this.apiUrl + 'pistatus')
         .then((res) => {
           let r = res.data.resp
           this.cpu_t = r.cpu_t / 1000
